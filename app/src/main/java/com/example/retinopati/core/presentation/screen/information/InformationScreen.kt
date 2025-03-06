@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.retinopati.core.components.CustomButton
-import com.example.retinopati.core.components.RetinopatiToolbar
+import com.example.retinopati.core.presentation.components.CustomButton
+import com.example.retinopati.core.presentation.components.RetinopatiToolbar
 import com.example.retinopati.ui.theme.AppTheme
 
 @Composable

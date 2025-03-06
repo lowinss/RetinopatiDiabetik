@@ -1,4 +1,4 @@
-package com.example.retinopati.core.components
+package com.example.retinopati.core.presentation.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape

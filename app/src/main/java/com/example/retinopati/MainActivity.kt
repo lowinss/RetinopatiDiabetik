@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
-import com.example.retinopati.core.components.CustomButton
+import com.example.retinopati.core.presentation.components.CustomButton
 import com.example.retinopati.core.presentation.navigation.NavigationRoot
 import com.example.retinopati.ui.theme.AppTheme
 
