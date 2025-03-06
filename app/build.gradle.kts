@@ -36,6 +36,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.exifinterface)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,4 +69,18 @@ dependencies {
 
     // JSON serialization library, works with the Kotlin serialization plugin
     implementation(libs.kotlinx.serialization.json)
+
+    // The following line is optional, as the core library is included indirectly by camera-camera2
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    // If you want to additionally use the CameraX Lifecycle library
+    implementation(libs.androidx.camera.lifecycle)
+    // If you want to additionally use the CameraX Extensions library
+    implementation(libs.androidx.camera.extensions)
+
+    // Coil for Image loading
+    implementation(libs.coil.compose)
+
+    // Accompanist Permissions for permissions handling
+    implementation(libs.accompanist.permissions)
 }
