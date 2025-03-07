@@ -4,7 +4,6 @@ import android.Manifest
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -12,10 +11,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,25 +25,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import androidx.core.content.FileProvider
 import coil3.compose.rememberAsyncImagePainter
+import com.example.retinopati.BuildConfig
 import com.example.retinopati.R
 import com.example.retinopati.core.presentation.components.CustomButton
 import com.example.retinopati.core.presentation.components.RetinopatiToolbar
-import com.example.retinopati.core.utils.getImageUri
+import com.example.retinopati.core.utils.createImageFile
 import com.example.retinopati.ui.theme.AppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import java.util.Objects
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
+    val file = context.createImageFile()
+    val uri = FileProvider.getUriForFile(
+        Objects.requireNonNull(context),
+        BuildConfig.APPLICATION_ID + ".FileProvider", file
+    )
+
     var localImageUri: Uri by remember { mutableStateOf(Uri.EMPTY) }
 
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
@@ -62,7 +67,7 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
 
     val cameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
-            localImageUri = getImageUri(context)
+            localImageUri = uri
             Log.d("URI", "URI : $localImageUri")
         }
 //
@@ -86,10 +91,14 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            AsyncImage(
-                model = localImageUri,
+            Image(
+                painter = rememberAsyncImagePainter(
+                    if (localImageUri.path?.isNotEmpty() == true) localImageUri else R.drawable.logo
+                ),
                 contentDescription = "null",
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .size(width = 240.dp, height = 0.dp)
+                    .weight(1f)
             )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(40.dp),
@@ -109,8 +118,7 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
                 CustomButton(onClick = {}, text = "Galeri")
                 CustomButton(onClick = {
                     if (cameraPermissionState.status.isGranted) {
-                        localImageUri = getImageUri(context)
-                        cameraLauncher.launch(localImageUri)
+                        cameraLauncher.launch(uri)
                     } else {
                         cameraPermissionState.launchPermissionRequest()
                         hasRequestedPermission = true
