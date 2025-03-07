@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.retinopati.core.presentation.components.CustomButton
+import com.example.retinopati.core.presentation.components.InfoCard
 import com.example.retinopati.core.presentation.components.RetinopatiToolbar
 import com.example.retinopati.ui.theme.AppTheme
 
@@ -21,6 +23,16 @@ fun InformationScreen(modifier: Modifier = Modifier) {
 
 @Composable
 fun InformationContent(onClickHome: () -> Unit, modifier: Modifier = Modifier) {
+    val citraList = listOf("Pertama", "Kedua", "Ketiga")
+    val guideList = listOf("Pertama", "Kedua", "Ketiga")
+    val diabetikList = listOf(
+        "Non Retinopati Diabetik",
+        "R. D. Ringan",
+        "R. D. Sedang",
+        "R. D. Berat",
+        "R. D. Proliferatif"
+    )
+
     Scaffold(
         topBar = {
             RetinopatiToolbar(
@@ -32,13 +44,15 @@ fun InformationContent(onClickHome: () -> Unit, modifier: Modifier = Modifier) {
     ) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.spacedBy(40.dp),
             modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Text("Ini halaman Informasi")
-            CustomButton(onClick = onClickHome, text = "Kembali")
+            InfoCard(title = "Panduan Pengambilan Citra", contentList = citraList)
+            InfoCard(title = "Panduan Penggunaan Aplikasi", contentList = guideList)
+            InfoCard(title = "Hasil Deteksi", contentList = diabetikList, leadText = "Deteksi retinopati diabetik diklasifikasikan menjadi 5 :")
+//            CustomButton(onClick = onClickHome, text = "Kembali")
         }
     }
 }
