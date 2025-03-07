@@ -4,6 +4,7 @@ import android.Manifest
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -70,11 +71,16 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
             localImageUri = uri
             Log.d("URI", "URI : $localImageUri")
         }
-//
-//    val galleryLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.PickVisualMedia(),
-//        onResult = { uri: Uri? -> localImageUri = uri }
-//    )
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { galleryUri: Uri? ->
+            uri?.let {
+                localImageUri = it
+                Log.d("URI", "Gallery URI : $it ")
+            }
+        }
+    )
 
     Scaffold(
         topBar = {
@@ -115,7 +121,13 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
 //                }) { Text(text = "Kamera") }
 
 
-                CustomButton(onClick = {}, text = "Galeri")
+                CustomButton(onClick = {
+                    galleryLauncher.launch(
+                        PickVisualMediaRequest(
+                            ActivityResultContracts.PickVisualMedia.ImageOnly
+                        )
+                    )
+                }, text = "Galeri")
                 CustomButton(onClick = {
                     if (cameraPermissionState.status.isGranted) {
                         cameraLauncher.launch(uri)
