@@ -17,12 +17,12 @@ import com.example.retinopati.core.presentation.components.RetinopatiToolbar
 import com.example.retinopati.ui.theme.AppTheme
 
 @Composable
-fun HomeContent(onClickCheck: () -> Unit, onClickInfo: () -> Unit, modifier: Modifier = Modifier) {
+fun HomeContent(onClickCheck: () -> Unit, onClickInfo: () -> Unit, onClickBack: () -> Unit, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             RetinopatiToolbar(
                 title = "HALAMAN UTAMA",
-                onBackClick = {},
+                onClickBack = onClickBack,
             )
         },
         modifier = modifier
@@ -57,7 +57,8 @@ fun HomePreview() {
     AppTheme {
         HomeContent(
             onClickCheck = {},
-            onClickInfo = { }
+            onClickInfo = {},
+            onClickBack = {}
         )
     }
 }

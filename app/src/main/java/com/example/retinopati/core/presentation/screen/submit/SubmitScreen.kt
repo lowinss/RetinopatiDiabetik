@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,12 +43,16 @@ import java.util.Objects
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
+fun SubmitContent(
+    onClickBack: () -> Unit,
+    onClickProceed: (uri: String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
     val file = context.createImageFile()
     val uri = FileProvider.getUriForFile(
         Objects.requireNonNull(context),
-        BuildConfig.APPLICATION_ID + ".FileProvider", file
+        BuildConfig.APPLICATION_ID + ".provider", file
     )
 
     var localImageUri: Uri by remember { mutableStateOf(Uri.EMPTY) }
@@ -75,7 +79,7 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { galleryUri: Uri? ->
-            uri?.let {
+            galleryUri?.let {
                 localImageUri = it
                 Log.d("URI", "Gallery URI : $it ")
             }
@@ -86,7 +90,7 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
         topBar = {
             RetinopatiToolbar(
                 title = "CEK",
-                onBackClick = {},
+                onClickBack = onClickBack,
             )
         },
         modifier = modifier
@@ -97,30 +101,20 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            Spacer(modifier = Modifier.weight(0.3f))
             Image(
                 painter = rememberAsyncImagePainter(
-                    if (localImageUri.path?.isNotEmpty() == true) localImageUri else R.drawable.logo
+                    if (localImageUri.path?.isNotEmpty() == true) localImageUri else R.drawable.image
                 ),
                 contentDescription = "null",
                 modifier = Modifier
-                    .size(width = 240.dp, height = 0.dp)
-                    .weight(1f)
+                    .width(360.dp)
+                    .height(320.dp)
             )
+            Spacer(modifier = Modifier.weight(1f))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(40.dp),
             ) {
-//                OutlinedButton(onClick = {
-//                    galleryLauncher.launch(
-//                        PickVisualMediaRequest(
-//                            ActivityResultContracts.PickVisualMedia.ImageOnly
-//                        )
-//                    )
-//                }) { Text(text = "Galeri") }
-//                OutlinedButton(onClick = {
-//                    cameraLauncher.launch(android.Manifest.permission.CAMERA)
-//                }) { Text(text = "Kamera") }
-
-
                 CustomButton(onClick = {
                     galleryLauncher.launch(
                         PickVisualMediaRequest(
@@ -137,9 +131,8 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
                     }
                 }, text = "Kamera")
             }
-            CustomButton(onClick = onClickProceed, text = "PROSES")
-//            OutlinedButton(onClick = onClickProceed) { Text(text = "PROSES") }
-            Spacer(modifier = Modifier.weight(0.1f))
+            CustomButton(onClick = { onClickProceed(localImageUri.toString()) }, text = "PROSES")
+            Spacer(modifier = Modifier.weight(0.3f))
         }
     }
 }
@@ -148,6 +141,6 @@ fun SubmitContent(onClickProceed: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 fun SubmitContentPreview() {
     AppTheme {
-        SubmitContent(onClickProceed = {})
+        SubmitContent(onClickBack = {},onClickProceed = {})
     }
 }
