@@ -2,11 +2,9 @@ package com.example.retinopati.core.presentation.screen.submit
 
 import android.Manifest
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,18 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
-import coil3.compose.rememberAsyncImagePainter
-import com.example.retinopati.BuildConfig
+import coil3.compose.AsyncImage
 import com.example.retinopati.R
 import com.example.retinopati.core.presentation.components.CustomButton
 import com.example.retinopati.core.presentation.components.RetinopatiToolbar
-import com.example.retinopati.core.utils.createImageFile
+import com.example.retinopati.core.utils.getImageUri
 import com.example.retinopati.ui.theme.AppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import java.util.Objects
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -49,13 +44,9 @@ fun SubmitContent(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val file = context.createImageFile()
-    val uri = FileProvider.getUriForFile(
-        Objects.requireNonNull(context),
-        BuildConfig.APPLICATION_ID + ".provider", file
-    )
 
-    var localImageUri: Uri by remember { mutableStateOf(Uri.EMPTY) }
+    var previewImageUri: Uri by rememberSaveable { mutableStateOf(Uri.EMPTY) }
+    var cameraUri by remember { mutableStateOf(Uri.EMPTY) }
 
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
 
@@ -71,17 +62,20 @@ fun SubmitContent(
     }
 
     val cameraLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
-            localImageUri = uri
-            Log.d("URI", "URI : $localImageUri")
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+            if (isSuccess) {
+                previewImageUri = cameraUri
+            } else {
+                cameraUri = Uri.EMPTY
+                previewImageUri = Uri.EMPTY
+            }
         }
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { galleryUri: Uri? ->
             galleryUri?.let {
-                localImageUri = it
-                Log.d("URI", "Gallery URI : $it ")
+                previewImageUri = it
             }
         }
     )
@@ -102,10 +96,9 @@ fun SubmitContent(
                 .padding(innerPadding)
         ) {
             Spacer(modifier = Modifier.weight(0.3f))
-            Image(
-                painter = rememberAsyncImagePainter(
-                    if (localImageUri.path?.isNotEmpty() == true) localImageUri else R.drawable.image
-                ),
+            AsyncImage(
+                model =
+                    if (previewImageUri.path?.isNotEmpty() == true) previewImageUri else R.drawable.image,
                 contentDescription = "null",
                 modifier = Modifier
                     .width(360.dp)
@@ -124,14 +117,15 @@ fun SubmitContent(
                 }, text = "Galeri")
                 CustomButton(onClick = {
                     if (cameraPermissionState.status.isGranted) {
-                        cameraLauncher.launch(uri)
+                        cameraUri = getImageUri(context)
+                        cameraLauncher.launch(cameraUri)
                     } else {
                         cameraPermissionState.launchPermissionRequest()
                         hasRequestedPermission = true
                     }
                 }, text = "Kamera")
             }
-            CustomButton(onClick = { onClickProceed(localImageUri.toString()) }, text = "PROSES")
+            CustomButton(onClick = { onClickProceed(previewImageUri.toString()) }, text = "PROSES")
             Spacer(modifier = Modifier.weight(0.3f))
         }
     }
@@ -141,6 +135,8 @@ fun SubmitContent(
 @Composable
 fun SubmitContentPreview() {
     AppTheme {
-        SubmitContent(onClickBack = {},onClickProceed = {})
+        SubmitContent(onClickBack = {}, onClickProceed = {})
     }
 }
+
+

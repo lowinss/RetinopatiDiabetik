@@ -17,26 +17,11 @@ import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
 private const val MAXIMAL_SIZE = 1000000
-
-
-fun Context.createImageFile(): File {
-    // Create an image file name
-    val timeStamp = SimpleDateFormat(FILENAME_FORMAT).format(Date())
-    val imageFileName = "JPEG_" + timeStamp + "_"
-    val image = File.createTempFile(
-        imageFileName, /* prefix */
-        ".jpg", /* suffix */
-        externalCacheDir      /* directory */
-    )
-    return image
-}
 
 private val timeStamp: String = SimpleDateFormat(
     FILENAME_FORMAT,
@@ -82,3 +67,29 @@ fun rotateImage(source: Bitmap, angle: Float): Bitmap {
     )
 }
 
+fun getImageUri(context: Context): Uri {
+    var uri: Uri? = null
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "satu.jpg")
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/Retinopati")
+        }
+        uri = context.contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            contentValues
+        )
+    }
+    return uri ?: getImageUriForPreQ(context)
+}
+
+private fun getImageUriForPreQ(context: Context): Uri {
+    val filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+    val imageFile = File(filesDir, "/Retinopati/satu.jpg")
+    if (imageFile.parentFile?.exists() == false) imageFile.parentFile?.mkdir()
+    return FileProvider.getUriForFile(
+        context,
+        "${BuildConfig.APPLICATION_ID}.provider",
+        imageFile
+    )
+}
