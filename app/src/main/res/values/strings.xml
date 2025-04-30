@@ -2,4 +2,27 @@
     <string name="app_name">Retinopati</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_submit">SubmitActivity</string>
+
+    <string name="guide_capture_title">Panduan Pengambilan Citra</string>
+    <string-array name="guide_capture_steps">
+        <item>1. Pertama</item>
+        <item>2. Kedua</item>
+        <item>3. Ketiga</item>
+    </string-array>
+    <string name="guide_usage_title">Panduan Penggunaan Aplikasi</string>
+    <string-array name="guide_usage_steps">
+        <item>1. Pertama</item>
+        <item>2. Kedua</item>
+        <item>3. Ketiga</item>
+    </string-array>
+    <string name="prediction_list_title">Hasil Deteksi</string>
+    <string name="information_screen_title">INFORMASI</string>
+    <string-array name="prediction_list">
+        <item>Deteksi retinopatik diabetik diklasifikasikan menjadi 5: </item>
+        <item>1. Non Retinopati Diabetik</item>
+        <item>2. R. D. Ringan</item>
+        <item>3. R. D. Sedang</item>
+        <item>4. R. D. Berat</item>
+        <item>5. R. D. Proliferatif</item>
+    </string-array>
 </resources>
