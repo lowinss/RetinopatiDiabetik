@@ -52,8 +52,8 @@ fun InfoCard(
                 Text(text = leadText)
             }
 
-            contentList.forEachIndexed { index, item ->
-                Text(text = "${index + 1}. $item", modifier = Modifier.padding(start = 8.dp))
+            contentList.forEach { item ->
+                Text(text = item, modifier = Modifier.padding(start = 8.dp))
             }
 
             HorizontalDivider(
