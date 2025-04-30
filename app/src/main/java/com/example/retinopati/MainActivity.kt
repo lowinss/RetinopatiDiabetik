@@ -36,6 +36,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.retinopati.core.presentation.components.CustomButton
 import com.example.retinopati.core.presentation.navigation.NavigationRoot
 import com.example.retinopati.ui.theme.AppTheme
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
