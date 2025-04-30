@@ -1,5 +1,6 @@
 package com.example.retinopati.core.presentation.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -26,26 +27,29 @@ fun NavigationRoot(
             HomeContent(
                 onClickCheck = { navController.navigate(Routes.SubmitScreen) },
                 onClickInfo = { navController.navigate(Routes.InformationScreen) },
-                onClickBack = { navController.navigateUp()}
+                onClickBack = { navController.navigateUp() }
             )
         }
         composable<Routes.SubmitScreen> {
             SubmitContent(
-                onClickProceed = { navController.navigate(Routes.ResultScreen(uri = it)) },
-                onClickBack = { navController.navigateUp()}
+                onClickProceed = { uri, prediction ->
+                    navController.navigate(Routes.ResultScreen(uri, prediction))
+                },
+                onClickBack = { navController.navigateUp() }
             )
         }
         composable<Routes.ResultScreen> {
             val args = it.toRoute<Routes.ResultScreen>()
             ResultContent(
                 uri = args.uri,
+                prediction = args.prediction,
                 onClickBack = { navController.navigateUp() }
             )
         }
         composable<Routes.InformationScreen> {
             InformationContent(
 //                onClickHome = { navController.navigate(Routes.InitialScreen) },
-                onClickBack = { navController.navigateUp()}
+                onClickBack = { navController.navigateUp() }
 
             )
         }

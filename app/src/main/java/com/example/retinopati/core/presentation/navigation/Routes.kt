@@ -14,7 +14,7 @@ sealed interface Routes {
     data object SubmitScreen: Routes
 
     @Serializable
-    data class ResultScreen(val uri: String): Routes
+    data class ResultScreen(val uri: String, val prediction: String): Routes
 
     @Serializable
     data object InformationScreen: Routes
