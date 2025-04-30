@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +29,7 @@ import com.example.retinopati.ui.theme.AppTheme
 @Composable
 fun ResultContent(
     uri: String,
+    prediction: String,
     onClickBack: () -> Unit, modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -62,7 +62,7 @@ fun ResultContent(
             CustomButton(onClick = {}, text = "Hasil")
             val placeholderText = LoremIpsum(85).values.toList().first().toString()
             Text(
-                text = placeholderText,
+                text = prediction,
                 textAlign = TextAlign.Justify,
                 modifier = Modifier.padding(20.dp)
             )
@@ -74,6 +74,6 @@ fun ResultContent(
 @Composable
 private fun ResultContentPreview() {
     AppTheme {
-        ResultContent(uri = "", onClickBack = {})
+        ResultContent(uri = "", prediction = "", onClickBack = {})
     }
 }
