@@ -17,9 +17,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
+        debug {
+            buildConfigField(type = "String","BASE_URL","\"http://192.168.1.115:8888\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -83,4 +87,14 @@ dependencies {
 
     // Accompanist Permissions for permissions handling
     implementation(libs.accompanist.permissions)
+
+    // Ktor Client for HTTP Request
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.serialization.json)
+    implementation(libs.ktor.client.content.negotiation)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 }
