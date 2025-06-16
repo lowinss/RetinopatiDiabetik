@@ -4,25 +4,39 @@
     <string name="title_activity_submit">SubmitActivity</string>
 
     <string name="guide_capture_title">Panduan Pengambilan Citra</string>
-    <string-array name="guide_capture_steps">
-        <item>1. Pertama</item>
-        <item>2. Kedua</item>
-        <item>3. Ketiga</item>
-    </string-array>
+    <string name="guide_capture_step1">Pastikan ruangan memiliki pencahayaan yang baik dan merata. Hindari cahaya langsung yang berlebihan, termasuk flash kamera yang terlalu dekat</string>
+    <string name="guide_capture_step2">Fokuskan kamera HP Anda tepat pada citra fundus. Area ini krusial untuk deteksi retinopati diabetik. Usahakan gambar jelas, tidak buram, dan tidak goyang.</string>
+    <string name="guide_capture_step3">Dekatkan lensa kamera HP sekitar 5–10 cm dari citra fundus</string>
+
     <string name="guide_usage_title">Panduan Penggunaan Aplikasi</string>
     <string-array name="guide_usage_steps">
-        <item>1. Pertama</item>
-        <item>2. Kedua</item>
-        <item>3. Ketiga</item>
+        <item>Pertama</item>
+        <item>Kedua</item>
+        <item>Ketiga</item>
+    </string-array>
+    <string name="guide_usage_step1">Halaman Awal (Splash Screen):</string>
+    <string-array name="subguide_usage_step1">
+        <item>Tekan "Deteksi" untuk langsung ke halaman deteksi gambar.</item>
+        <item>Tekan "Informasi" untuk membaca panduan dan penjelasan.</item>
+    </string-array>
+    <string name="guide_usage_step2">Halaman Deteksi:</string>
+    <string-array name="subguide_usage_step2">
+        <item>Tekan "Kamera" untuk ambil gambar langsung (perhatikan "Panduan Pengambilan Citra").</item>
+        <item>Tekan "Upload" untuk pilih gambar dari galeri/file.</item>
+        <item>Setelah gambar dipilih/diambil, tekan "Deteksi" untuk memulai analisis.</item>
+    </string-array>
+    <string name="guide_usage_step3">Halaman Hasil Deteksi:</string>
+    <string-array name="subguide_usage_step3">
+        <item>Lihat gambar yang diunggah.</item>
+        <item>Lihat hasil deteksi (misal: NON-RETINOPATI, RINGAN).</item>
+        <item>Baca keterangan dan langkah awal yang direkomendasikan untuk tenaga medis.</item>
     </string-array>
     <string name="prediction_list_title">Hasil Deteksi</string>
     <string name="information_screen_title">INFORMASI</string>
-    <string-array name="prediction_list">
-        <item>Deteksi retinopatik diabetik diklasifikasikan menjadi 5: </item>
-        <item>1. Non Retinopati Diabetik</item>
-        <item>2. R. D. Ringan</item>
-        <item>3. R. D. Sedang</item>
-        <item>4. R. D. Berat</item>
-        <item>5. R. D. Proliferatif</item>
-    </string-array>
+    <string name="prediction_list_lead">Aplikasi akan mengklasifikasikan kondisi Retinopati Diabetik ke dalam salah satu dari lima kelas keparahan:</string>
+    <string name="prediction_list1">Non-Retinopati Diabetik</string>
+    <string name="prediction_list2">RD Ringan (Mild)</string>
+    <string name="prediction_list3">RD Sedang (Moderate)</string>
+    <string name="prediction_list4">RD Berat (Severe)</string>
+    <string name="prediction_list5">RD Parah (Proliferative)</string>
 </resources>
